@@ -1,27 +1,25 @@
 function mydialog(title, msg, type, fun, color) {
-	var dialogBox = '<div id="mydialog-box"><div id="mydialog-header" style=""><div id="mydialog-close" style="float:right;">&times;</div>'+ title +'</div><div id="mydialog-body" style="height:100px;background:white;">'+ msg +'</div><div id="mydialog-footer" style="background:white; text-align:right">';
+	var dialogBox = '<div id="mydialog-box"><div id="mydialog-header"><span id="mydialog-close">&times;</span>'+ title +'</div><div id="mydialog-body">'+ msg +'</div><div id="mydialog-footer">';
 	if(type == "confirm") {
-		dialogBox += '<button id="confirm-ok">ok</button><button id="confirm-cancel">cancel</button>';
+		dialogBox += '<div id="confirm-ok" class="mydialog-button">ok</div><div id="confirm-cancel" class="mydialog-button">cancel</div>';
 	} else {
-		dialogBox += '<button id="alert-ok">ok</button>';
+		dialogBox += '<div id="alert-ok" class="mydialog-button">ok</div>';
 	}
 	dialogBox += '</div></div>';
 	$("body").append(dialogBox);
-
-	//添加样式
-	if(typeof(color) != "string") {
-		color = "#e1e1e8";
-	}
-	$("#mydialog-box").css({
-		"display": "none",
-		"position": "fixed",
-		"padding": "0 5px 5px 5px",
-		"width": "300px",
-		"background": color,
-	});
+	//居中显示
 	var top = ($(window).height() - $("#mydialog-box").height()) / 2 + "px";
 	var left = ($(window).width() - $("#mydialog-box").width()) / 2 + "px";
 	$("#mydialog-box").css({"top": top, "left": left});
+	//屏幕尺寸发生变化时重新定位
+	window.onresize = function() {
+		var top = ($(window).height() - $("#mydialog-box").height()) / 2 + "px";
+		var left = ($(window).width() - $("#mydialog-box").width()) / 2 + "px";
+		$("#mydialog-box").css({"top": top, "left": left});
+	}
+	if(color == "primary" || "success" || "warning" || "danger") {
+		$("#mydialog-box").addClass(color);
+	}
 
 	$("#mydialog-box").fadeIn(function() {
 		$(this).css("display", "block");
