@@ -1,12 +1,29 @@
-function mydialog(title, msg, type, fun) {
-	var dialogBox = '<div id="mydialog-box" style="position:relative;width:300px;left:100px;top:100px;background:green;padding:5px;"><div id="mydialog-header" style=""><div id="mydialog-close" style="float:right;">x</div>'+ title +'</div><div id="mydialog-body" style="height:100px;background:white;">'+ msg +'</div><div id="mydialog-footer">';
+function mydialog(title, msg, type, fun, color) {
+	var dialogBox = '<div id="mydialog-box"><div id="mydialog-header"><span id="mydialog-close">&times;</span>'+ title +'</div><div id="mydialog-body">'+ msg +'</div><div id="mydialog-footer">';
 	if(type == "confirm") {
-		dialogBox += '<button id="confirm-ok">ok</button><button id="confirm-cancel">cancel</button>';
+		dialogBox += '<div id="confirm-ok" class="mydialog-button">ok</div><div id="confirm-cancel" class="mydialog-button">cancel</div>';
 	} else {
-		dialogBox += '<button id="alert-ok">ok</button>';
+		dialogBox += '<div id="alert-ok" class="mydialog-button">ok</div>';
 	}
 	dialogBox += '</div></div>';
 	$("body").append(dialogBox);
+	//居中显示
+	var top = ($(window).height() - $("#mydialog-box").height()) / 2 + "px";
+	var left = ($(window).width() - $("#mydialog-box").width()) / 2 + "px";
+	$("#mydialog-box").css({"top": top, "left": left});
+	//屏幕尺寸发生变化时重新定位
+	window.onresize = function() {
+		var top = ($(window).height() - $("#mydialog-box").height()) / 2 + "px";
+		var left = ($(window).width() - $("#mydialog-box").width()) / 2 + "px";
+		$("#mydialog-box").css({"top": top, "left": left});
+	}
+	if(color == "primary" || "success" || "warning" || "danger") {
+		$("#mydialog-box").addClass(color);
+	}
+
+	$("#mydialog-box").fadeIn(function() {
+		$(this).css("display", "block");
+	});
 
 	//弹窗的关闭
 	$("#mydialog-close").click(function() {
@@ -28,15 +45,15 @@ function mydialog(title, msg, type, fun) {
 	var move = false;
 	var _x, _y;
 	$("#mydialog-header").click().mousedown(function(e) {
-		_x = e.pageX - parseInt($("#mydialog-box").css("left"));
-		_y = e.pageY - parseInt($("#mydialog-box").css("top"));
+		_x = e.pageX - $("#mydialog-box").offset().left;
+		_y = e.pageY - $("#mydialog-box").offset().top;
 		move = true;
 	});
 	$(document).mousemove(function(e) {
 		if(move) {
-			var x = e.pageX - _x;
-			var y = e.pageY - _y;
-			$("#mydialog-box").css({top:y, left:x});
+			var x = e.pageX - _x + "px";
+			var y = e.pageY - _y + "px";
+			$("#mydialog-box").css({"top":y, "left":x});
 		}
 	}).mouseup(function() {
 		move = false;
