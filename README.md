@@ -12,7 +12,7 @@ mydialog.js
 <script src="mydialog.js"></script>
 ```
 
-为了便于维护，将弹窗的样式移到了css文件中。这样，我们还需要引入css文件。
+为了便于维护，将弹窗的样式移到了css文件中。这样，我们还需要引入mydialog.css文件。
 
 ```
 <link rel="stylesheet" href="mydialog.css">
