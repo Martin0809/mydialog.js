@@ -1,4 +1,4 @@
-function mydialog(title, msg, type, fun, color) {
+function mydialog(title, msg, type, fun, color, bool) {
 	var dialogBox = '<div id="mydialog-box"><div id="mydialog-header"><span id="mydialog-close">&times;</span>'+ title +'</div><div id="mydialog-body">'+ msg +'</div><div id="mydialog-footer">';
 	if(type == "confirm") {
 		dialogBox += '<div id="confirm-ok" class="mydialog-button">ok</div><div id="confirm-cancel" class="mydialog-button">cancel</div>';
@@ -42,22 +42,25 @@ function mydialog(title, msg, type, fun, color) {
 	});
 
 	//弹窗的拖拽
-	var move = false;
-	var _x, _y;
-	$("#mydialog-header").click().mousedown(function(e) {
-		_x = e.pageX - $("#mydialog-box").offset().left;
-		_y = e.pageY - $("#mydialog-box").offset().top;
-		move = true;
-	});
-	$(document).mousemove(function(e) {
-		if(move) {
-			var x = e.pageX - _x + "px";
-			var y = e.pageY - _y + "px";
-			$("#mydialog-box").css({"top":y, "left":x});
-		}
-	}).mouseup(function() {
-		move = false;
-	});
+	if(bool == true) {
+		var move = false;
+		var _x, _y;
+		$("#mydialog-header").click().mousedown(function(e) {
+			_x = e.pageX - $("#mydialog-box").offset().left;
+			_y = e.pageY - $("#mydialog-box").offset().top;
+			move = true;
+		});
+		$(document).mousemove(function(e) {
+			if(move) {
+				var x = e.pageX - _x + "px";
+				var y = e.pageY - _y + "px";
+				$("#mydialog-box").css({"top":y, "left":x});
+			}
+		}).mouseup(function() {
+			move = false;
+		});
+	}
+	
 }
 
 //关闭弹窗的方法
